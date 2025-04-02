@@ -9,7 +9,7 @@ import {
   getSingleVideo,
 } from '../controllers/video.controller.js';
 
-import { upload } from '../helper/multer.js'; 
+import { upload } from '../helper/multer.js';
 import { verifyToken } from '../middlewares/verify.middleware.js';
 
 const router = express.Router();
@@ -24,8 +24,8 @@ router
       { name: 'thumbnail', maxCount: 1 },
     ]),
     uploadVideo
-  ); 
-  router.route('/:videoId').get(getSingleVideo) 
+  );
+  router.route('/:videoId').get(getSingleVideo)
 router
   .route('/:id')
   .get(getVideoById)
