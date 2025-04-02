@@ -118,7 +118,7 @@ const loginUser = asyncHandler(
             httpOnly: true,
             secure: false, 
             path:'/',
-            domain: 'localhost'
+            domain: 'video-stream-frontend-steel.vercel.app'
         };
 
         res.cookie(
