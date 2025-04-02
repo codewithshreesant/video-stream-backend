@@ -1,25 +1,40 @@
 import { v2 as cloudinary } from 'cloudinary';
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'
+import streamifier from 'streamifier';
 
 dotenv.config();
 
 // Cloudinary Configuration
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.CLOUDINARY_NAME, // Replace with your Cloudinary cloud name
+  api_key: process.env.CLOUDINARY_API_KEY,       // Replace with your Cloudinary API key
+  api_secret: process.env.CLOUDINARY_API_SECRET, // Replace with your Cloudinary API secret
 });
 
 // Function to Upload File to Cloudinary
-const uploadToCloudinary = async (filePath, options = {}) => {
-  try {
-    const result = await cloudinary.uploader.upload(filePath, options);
-    console.log('Upload Successful!', result.secure_url);
-    return result; // Return the entire result object
-  } catch (error) {
-    console.error('Upload Error:', error);
-    throw error; // Re-throw the error object
-  }
+const uploadToCloudinary = (fileBuffer, options = {}) => {
+  return new Promise((resolve, reject) => {
+      const stream = streamifier.createReadStream(fileBuffer);
+      cloudinary.uploader.upload_stream(options, (error, result) => {
+          if (error) {
+              reject(error);
+          } else {
+              resolve(result);
+          }
+      }).end(stream);
+  });
 };
 
-export { uploadToCloudinary };
+export {
+    uploadToCloudinary
+}
+
+// // Example Usage
+// (async () => {
+//   try {
+//     const imageUrl = await uploadToCloudinary('path/to/your/image.jpg', 'your-folder-name');
+//     console.log('Uploaded Image URL:', imageUrl);
+//   } catch (error) {
+//     console.error('Failed to upload the file:', error);
+//   }
+// })();
