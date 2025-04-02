@@ -118,7 +118,6 @@ const loginUser = asyncHandler(
             httpOnly: true,
             secure: false, 
             path:'/',
-            domain: 'video-stream-frontend-steel.vercel.app'
         };
 
         res.cookie(
