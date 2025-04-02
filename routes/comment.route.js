@@ -10,7 +10,7 @@ import {
 } from '../controllers/comment.controller.js'; 
 import { verifyToken } from '../middlewares/verify.middleware.js';
 
-router.post('/videos/:videoId/comments', createComment);
+router.post('/videos/:videoId/comments', verifyToken, createComment);
 
 router.get('/videos/:videoId/comments', getCommentsByVideoId);
 
