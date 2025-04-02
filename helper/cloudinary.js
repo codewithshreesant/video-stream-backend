@@ -13,18 +13,19 @@ cloudinary.config({
 
 // Function to Upload File to Cloudinary (Handles Buffer Input)
 const uploadToCloudinary = (fileBuffer, options = {}) => {
-  return new Promise((resolve, reject) => {
-    const stream = streamifier.createReadStream(fileBuffer);
-    cloudinary.uploader.upload_stream(options, (error, result) => {
-      if (error) {
-        console.error("Cloudinary Upload Error:", error);
-        reject(error);
-      } else {
-        resolve(result);
-      }
-    }).end(stream);
-  });
-};
+    return new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(options, (error, result) => {
+        if (error) {
+          console.error("Cloudinary Upload Error:", error);
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+  
+      streamifier.createReadStream(fileBuffer).pipe(stream); // Pipe the buffer stream correctly
+    });
+  };
 
 export {
   uploadToCloudinary
